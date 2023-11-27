@@ -5,22 +5,18 @@ class KamarMandiScreen extends StatelessWidget {
     ImageData(
       imagePath: 'assets/kamarmandi1.jpg',
       title: 'Simple and Elegant',
-
     ),
     ImageData(
       imagePath: 'assets/kamarmandi2.jpg',
       title: 'Title 2',
-
     ),
     ImageData(
       imagePath: 'assets/kamarmandi3.jpg',
       title: 'Title 3',
-
     ),
     ImageData(
       imagePath: 'assets/kamarmandi4.jpg',
       title: 'Title 4',
-
     ),
     // Add more items as needed
   ];
@@ -62,34 +58,45 @@ class ImageData {
   final String imagePath;
   final String title;
 
-
   ImageData({
     required this.imagePath,
     required this.title,
-
   });
 }
 
-class ImageCard extends StatelessWidget {
+class ImageCard extends StatefulWidget {
   final ImageData imageData;
 
   ImageCard({required this.imageData});
 
   @override
+  _ImageCardState createState() => _ImageCardState();
+}
+
+class _ImageCardState extends State<ImageCard> {
+  bool isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        print('Item tapped: ${imageData.imagePath}');
-        // Handle item tap if needed
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          isHovered = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          isHovered = false;
+        });
       },
       child: Card(
-        color: Colors.blueGrey,
+        color: isHovered ? Colors.blue : Colors.blueGrey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: Image.asset(
-                imageData.imagePath,
+                widget.imageData.imagePath,
                 fit: BoxFit.cover,
               ),
             ),
@@ -99,10 +106,11 @@ class ImageCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    imageData.title,
+                    widget.imageData.title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16.0,
+                      color: isHovered ? Colors.white : Colors.black,
                     ),
                   ),
                   SizedBox(height: 4.0),
